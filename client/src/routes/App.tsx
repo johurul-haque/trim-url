@@ -1,5 +1,6 @@
 import { Scissors } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 import pattern from '../assets/images/pattern.svg';
 import { Gradients } from '../components/Gradients';
 import { Header } from '../components/Header';
@@ -39,6 +40,8 @@ function App() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    toast.loading('Generating your short link');
+
     const response = await fetch(import.meta.env.VITE_SERVER_URL as URL, {
       method: 'POST',
       headers: {
@@ -54,7 +57,7 @@ function App() {
       let urlList = [];
 
       if (!localStorage.getItem('urls')) {
-        urlList.push({
+        urlList.unshift({
           shortId: data.id,
           redirectUrl: data.redirectUrl,
           timeStamp: data.timeStamp,
@@ -64,7 +67,7 @@ function App() {
       } else {
         urlList = JSON.parse(localStorage.getItem('urls')!) as any[];
 
-        urlList.push({
+        urlList.unshift({
           shortId: data.id,
           redirectUrl: data.redirectUrl,
           timeStamp: data.timeStamp,
@@ -72,6 +75,7 @@ function App() {
 
         localStorage.setItem('urls', JSON.stringify(urlList));
       }
+      toast.dismiss();
       setCount(urlList.length);
       setTableData(JSON.parse(localStorage.getItem('urls')!) as []);
     }
@@ -80,6 +84,7 @@ function App() {
   return (
     <>
       <Header />
+      <Toaster />
       <main className="text-gray-950 flex-1 flex flex-col ring">
         <section className="flex-1 overflow-y-hidden flex flex-col relative w-full overflow-x-clip bg-slate-50 bg-gradient-to-t from-slate-50 to-slate-100 pt-20">
           <Gradients />
@@ -90,7 +95,7 @@ function App() {
                 backgroundImage: `url(${pattern})`,
               }}
             >
-              <h1 className="lg:text-6xl sm:tracking-tight text-4xl sm:text-5xl mx-auto text-center uppercase font-bold mb-14 sm:mb-20">
+              <h1 className="lg:text-7xl sm:tracking-tight text-4xl sm:text-5xl mx-auto text-center uppercase font-bold mb-14 sm:mb-20">
                 Make your URL'S look{' '}
                 <span className="bg-clip-text bg-gradient-to-br from-gray-950 to-gray-500 from-35% text-transparent">
                   Magnificent

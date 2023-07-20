@@ -3,12 +3,12 @@ import { Link } from 'react-router-dom';
 
 export const Header = () => {
   return (
-    <header className="left-1/2 -translate-x-1/2 container max-w-6xl z-50 absolute mx-auto">
+    <header className="left-1/2 font-mono -translate-x-1/2 container max-w-6xl z-50 absolute mx-auto">
       <nav className="w-full py-4 flex justify-between items-center">
         <Link
           to={'/'}
           title="Link Shortener"
-          className="flex gap-x-2 text-lg sm:text-xl md:text-2xl font-semibold font-mono items-center"
+          className="flex gap-x-2 text-lg sm:text-xl md:text-2xl font-semibold items-center"
         >
           <LinkIcon
             aria-label="Link icon"

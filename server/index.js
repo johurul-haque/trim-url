@@ -28,37 +28,45 @@ async function run() {
     const database = client.db('shortener'),
       urls = database.collection('urls');
 
-    app.post('/', async (req, res) => {
-      if (!req.body.url) {
-        return res.status(400).json({
-          status: 400,
-          error: 'URL is required',
-        });
-      }
-
-      const shortId = nanoid(8);
-
-      await urls.insertOne({
-        shortId,
-        redirectUrl: req.body.url,
+      app.get('/', (req, res) => {
+        res.send(`<main>
+        <h1>Hi, I'm Johurul!</h1>
+        <p>An aspiring front-end dev, creating high quality web apps.</p>
+        <a href="https://www.linkedin.com/in/johurul-haque/">Linkedin</a>
+        </main>`);
       });
 
-      res.json({ id: shortId });
-    });
+      app.post('/', async (req, res) => {
+        if (!req.body.url) {
+          return res.status(400).send({
+            status: 400,
+            error: 'URL is required',
+          });
+        }
 
-    app.get('/:id', async (req, res) => {
-      const entry = await urls.findOne({
-        shortId: req.params.id,
-      });
+        const shortId = nanoid(8);
 
-      if (!entry)
-        return res.status(404).send({
-          status: 404,
-          error: 'No such entry',
+        await urls.insertOne({
+          shortId,
+          redirectUrl: req.body.url,
         });
 
-      res.redirect(entry.redirectUrl);
-    });
+        res.status(200).send({ status: 200, id: shortId });
+      });
+
+      app.get('/:id', async (req, res) => {
+        const entry = await urls.findOne({
+          shortId: req.params.id,
+        });
+
+        if (!entry)
+          return res.status(404).send({
+            status: 404,
+            error: 'No such entry',
+          });
+
+        res.redirect(entry.redirectUrl);
+      });
 
     await client.db('admin').command({ ping: 1 });
     console.log(

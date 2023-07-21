@@ -13,27 +13,12 @@ interface Response {
 
 function App() {
   const [tableData, setTableData] = useState([]);
-
-  // using count to rerender after removing data from local storage. 0 and -1 can sometimes be used to indicate the length of the array which leads to not rerendering the component. So 0.5🤭
   const [count, setCount] = useState(0.5);
 
   useEffect(() => {
     const urlList = JSON.parse(localStorage.getItem('urls')!) as [];
     setTableData(urlList || []);
   }, [count]);
-
-  const removeItem = (id: string) => {
-    const index = tableData.findIndex(
-      ({ shortId }: { shortId: string }) => shortId === id
-    );
-
-    if (index > -1) {
-      tableData.splice(index, 1);
-      localStorage.removeItem('urls');
-      localStorage.setItem('urls', JSON.stringify(tableData));
-      setCount(tableData.length);
-    }
-  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -117,7 +102,7 @@ function App() {
         </div>
       </form>
       {tableData.length > 0 && (
-        <ListUrls removeItem={removeItem} data={tableData} />
+        <ListUrls data={tableData} setCount={setCount} />
       )}
     </>
   );

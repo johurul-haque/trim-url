@@ -56,6 +56,7 @@ export const Collection = () => {
       tableData.splice(index, 1);
       localStorage.removeItem('urls');
       localStorage.setItem('urls', JSON.stringify(tableData));
+      toast.success('Item removed successfully');
       setCount(tableData.length);
 
       await fetch(`${import.meta.env.VITE_SERVER_URL as string}/delete/${id}`, {
@@ -68,6 +69,7 @@ export const Collection = () => {
   };
   const copyUrl = (url: string) => {
     copy(`https://shortesturl.vercel.app/${url}`);
+    toast.success('Copied to clipboard');
   };
 
   const updateUrl = async (e: React.FormEvent<HTMLFormElement>, id: string) => {
@@ -86,10 +88,35 @@ export const Collection = () => {
     );
 
     const result = (await response.json()) as Response;
+
+    const index = tableData.findIndex(
+      ({ shortId }: { shortId: string }) => shortId === id
+    );
+
+    if (index > -1) {
+      const currentData: { redirectUrl: string }[] = tableData.splice(index, 1);
+
+      currentData[0].redirectUrl = (
+        (e.target as HTMLFormElement).newUrl as HTMLInputElement
+      ).value;
+
+      const newTableData = [
+        ...tableData.slice(0, index),
+        ...currentData,
+        ...tableData.slice(index),
+      ];
+
+      localStorage.removeItem('urls');
+      localStorage.setItem('urls', JSON.stringify(newTableData));
+      setCount((prev) => prev + 1);
+    }
+
     if (result.modifiedCount > 0) {
       toast.success('Updated successfully');
     } else {
-      toast.success('Already up to date');
+      toast.success('Already up to date', {
+        icon: '❕',
+      });
     }
   };
 
@@ -154,7 +181,7 @@ export const Collection = () => {
                       <DialogFooter>
                         <Button
                           onClick={() => void removeItem(urlInfo.shortId)}
-                          className="block lowercase font-mono bg-rose-500 hover:bg-rose-400 ml-auto"
+                          className="block lowercase font-mono bg-rose-500 hover:bg-rose-400 max-sm:mx-auto ml-auto"
                           variant={'destructive'}
                         >
                           Delete
@@ -219,7 +246,7 @@ export const Collection = () => {
                           />
                           <DialogClose asChild>
                             <Button
-                              className="font-mono peer-invalid:pointer-events-none lowercase mt-3 ml-auto block"
+                              className="font-mono peer-invalid:pointer-events-none lowercase mt-3 max-sm:mx-auto ml-auto block"
                               type="submit"
                             >
                               Save

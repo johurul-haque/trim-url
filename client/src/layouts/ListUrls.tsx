@@ -31,7 +31,7 @@ interface Data {
     redirectUrl: string;
     timeStamp: string;
   }[];
-  removeItem: (id: string) => void;
+  setCount: React.Dispatch<React.SetStateAction<number>>;
 }
 
 interface Response {
@@ -42,9 +42,31 @@ interface Response {
   matchedCount: number;
 }
 
-export const ListUrls = ({ data, removeItem }: Data) => {
+export const ListUrls = ({ data, setCount }: Data) => {
   const copyUrl = (url: string) => {
     copy(`https://shortesturl.vercel.app/${url}`);
+    toast.success('Copied to clipboard');
+  };
+
+  const removeItem = async (id: string) => {
+    const index = data.findIndex(
+      ({ shortId }: { shortId: string }) => shortId === id
+    );
+
+    if (index > -1) {
+      data.splice(index, 1);
+      localStorage.removeItem('urls');
+      localStorage.setItem('urls', JSON.stringify(data));
+      toast.success('Item removed successfully');
+      setCount(data.length);
+
+      await fetch(`${import.meta.env.VITE_SERVER_URL as string}/delete/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+    }
   };
 
   const updateUrl = async (e: React.FormEvent<HTMLFormElement>, id: string) => {
@@ -63,10 +85,34 @@ export const ListUrls = ({ data, removeItem }: Data) => {
     );
 
     const result = (await response.json()) as Response;
+    const index = data.findIndex(
+      ({ shortId }: { shortId: string }) => shortId === id
+    );
+
+    if (index > -1) {
+      const currentData: { redirectUrl: string }[] = data.splice(index, 1);
+
+      currentData[0].redirectUrl = (
+        (e.target as HTMLFormElement).newUrl as HTMLInputElement
+      ).value;
+
+      const newTableData = [
+        ...data.slice(0, index),
+        ...currentData,
+        ...data.slice(index),
+      ];
+
+      localStorage.removeItem('urls');
+      localStorage.setItem('urls', JSON.stringify(newTableData));
+      setCount((prev: number) => prev + 1);
+    }
+
     if (result.modifiedCount > 0) {
       toast.success('Updated successfully');
     } else {
-      toast.success('Already up to date');
+      toast.success('Already up to date', {
+        icon: '❕',
+      });
     }
   };
 
@@ -124,8 +170,8 @@ export const ListUrls = ({ data, removeItem }: Data) => {
                         </DialogDescription>
                       </DialogHeader>
                       <Button
-                        onClick={() => removeItem(urlInfo.shortId)}
-                        className="block lowercase font-mono bg-rose-500 hover:bg-rose-400 ml-auto"
+                        onClick={() => void removeItem(urlInfo.shortId)}
+                        className="block lowercase font-mono bg-rose-500 hover:bg-rose-400 max-sm:mx-auto ml-auto"
                         variant={'destructive'}
                       >
                         Delete
@@ -139,7 +185,7 @@ export const ListUrls = ({ data, removeItem }: Data) => {
                   href={urlInfo.redirectUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-500"
+                  className="text-gray-500 break-all line-clamp-1"
                 >
                   {urlInfo.redirectUrl}
                 </a>
@@ -186,7 +232,7 @@ export const ListUrls = ({ data, removeItem }: Data) => {
                         />
                         <DialogClose asChild>
                           <Button
-                            className="font-mono peer-invalid:pointer-events-none lowercase mt-3 ml-auto block"
+                            className="font-mono peer-invalid:pointer-events-none lowercase mt-3 max-sm:mx-auto ml-auto block"
                             type="submit"
                           >
                             Save

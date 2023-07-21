@@ -30,8 +30,8 @@ async function run() {
 
       app.get('/', (req, res) => {
         res.send(`<main>
-        <h1>Hi, I'm Johurul!</h1>
-        <p>An aspiring front-end dev, creating high quality web apps.</p>
+        <h1>👋Hello! My name is Johurul Haque!</h1>
+        <p>I am a front-end developer, creating immersive web experiences.</p>
         <a href="https://www.linkedin.com/in/johurul-haque/">Linkedin</a>
         </main>`);
       });
@@ -49,9 +49,15 @@ async function run() {
         await urls.insertOne({
           shortId,
           redirectUrl: req.body.url,
+          timeStamp: new Date().toLocaleDateString(),
         });
 
-        res.status(200).send({ status: 200, id: shortId });
+        res.status(200).send({
+          status: 200,
+          id: shortId,
+          redirectUrl: req.body.url,
+          timeStamp: new Date().toLocaleDateString(),
+        });
       });
 
       app.get('/:id', async (req, res) => {
@@ -66,6 +72,29 @@ async function run() {
           });
 
         res.redirect(entry.redirectUrl);
+      });
+
+      app.patch('/edit/:id', async (req, res) => {
+        const entry = await urls.findOne({
+          shortId: req.params.id,
+        });
+
+        if (!entry)
+          return res.status(404).send({
+            status: 404,
+            error: 'No such entry',
+          });
+
+        const response = await urls.updateOne(
+          { shortId: req.params.id },
+          {
+            $set: {
+              redirectUrl: req.body.url,
+            },
+          }
+        );
+
+        res.status(200).send(response);
       });
 
     await client.db('admin').command({ ping: 1 });

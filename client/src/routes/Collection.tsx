@@ -52,7 +52,11 @@ export const Collection = () => {
         Back
       </button>
       <Table className="mx-auto max-w-xl sm:max-w-2xl lg:max-w-4xl my-5">
-        <TableCaption>A list of your short links.</TableCaption>
+        <TableCaption>
+          {tableData.length > 0
+            ? 'A list of your short links.'
+            : 'Your list is empty.'}
+        </TableCaption>
         <TableHeader>
           <TableRow>
             <TableHead className="min-w-[130px]">Date Creation</TableHead>
@@ -61,7 +65,7 @@ export const Collection = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {tableData.map((urlInfo: Data, i) => (
+          {tableData.map((urlInfo: Data) => (
             <TableRow key={urlInfo.shortId}>
               <TableCell>{urlInfo.timeStamp}</TableCell>
               <TableCell className="font-medium justify-between flex items-center gap-4">

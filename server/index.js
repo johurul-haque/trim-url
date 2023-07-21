@@ -75,6 +75,13 @@ async function run() {
       });
 
       app.patch('/edit/:id', async (req, res) => {
+        if (!req.body.url) {
+          return res.status(400).send({
+            status: 400,
+            error: 'URL is required',
+          });
+        }
+
         const entry = await urls.findOne({
           shortId: req.params.id,
         });
@@ -93,6 +100,22 @@ async function run() {
             },
           }
         );
+
+        res.status(200).send(response);
+      });
+
+      app.delete('/delete/:id', async (req, res) => {
+        const entry = await urls.findOne({
+          shortId: req.params.id,
+        });
+
+        if (!entry)
+          return res.status(404).send({
+            status: 404,
+            error: 'No such entry',
+          });
+
+        const response = await urls.deleteOne({ shortId: req.params.id });
 
         res.status(200).send(response);
       });

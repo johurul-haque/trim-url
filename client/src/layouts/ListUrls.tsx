@@ -71,6 +71,7 @@ export const ListUrls = ({ data, setCount }: Data) => {
 
   const updateUrl = async (e: React.FormEvent<HTMLFormElement>, id: string) => {
     e.preventDefault();
+
     const response = await fetch(
       `${import.meta.env.VITE_SERVER_URL as string}/edit/${id}`,
       {
@@ -125,8 +126,8 @@ export const ListUrls = ({ data, setCount }: Data) => {
         <TableHeader>
           <TableRow>
             <TableHead className="min-w-[130px]">Date Creation</TableHead>
-            <TableHead>Short URL</TableHead>
-            <TableHead>Redirects to</TableHead>
+            <TableHead className="min-w-[250px]">Short URL</TableHead>
+            <TableHead className="min-w-[250px]">Redirects to</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>

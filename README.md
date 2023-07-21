@@ -31,7 +31,9 @@ Run the frontend development server: `npm run host`
 Access the application at http://localhost:3000.
 
 Navigate to the **server** directory and add the MongoDB connection string to the .env file.
+
 Run the backend server: `node index.js` or `nodemon .`
+
 Access the application at http://localhost:5000.
 
 ## License

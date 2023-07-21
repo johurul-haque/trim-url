@@ -33,7 +33,7 @@ export const ListUrls = ({ data, removeItem }: Data) => {
         </TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-36">Date Creation</TableHead>
+            <TableHead className="min-w-[130px]">Date Creation</TableHead>
             <TableHead>Short URL</TableHead>
             <TableHead>Redirects to</TableHead>
           </TableRow>
@@ -56,7 +56,7 @@ export const ListUrls = ({ data, removeItem }: Data) => {
                   {urlInfo.shortId}
                 </a>
 
-                <div className="absolute px-3 bg-opacity-90 rounded bg-slate-100 sm:hidden sm:group-hover:block right-0 top-1/2 -translate-y-1/2 space-x-2">
+                <div className="absolute border pt-1 px-3 bg-opacity-95 rounded bg-slate-100 sm:hidden sm:group-hover:block right-0 top-1/2 -translate-y-1/2 space-x-4 sm:space-x-3">
                   <button
                     title="Copy to Clipboard"
                     onClick={() => copyUrl(urlInfo.shortId)}
@@ -74,7 +74,7 @@ export const ListUrls = ({ data, removeItem }: Data) => {
                   </button>
                 </div>
               </TableCell>
-              <TableCell>
+              <TableCell className="group relative">
                 <a
                   href={urlInfo.redirectUrl}
                   target="_blank"
@@ -83,6 +83,29 @@ export const ListUrls = ({ data, removeItem }: Data) => {
                 >
                   {urlInfo.redirectUrl}
                 </a>
+
+                <Link
+                  to={`/edit/${urlInfo.shortId}`}
+                  title="Edit Link"
+                  className="absolute border py-1 px-3 bg-opacity-95 rounded bg-slate-100 sm:hidden sm:group-hover:block right-0 top-1/2 -translate-y-1/2"
+                >
+                  <span className="sr-only">Edit Link</span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="w-5 h-5 hover:stroke-gray-600 stroke-gray-500"
+                  >
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                    <path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4Z" />
+                  </svg>
+                </Link>
               </TableCell>
             </TableRow>
           ))}
@@ -93,7 +116,7 @@ export const ListUrls = ({ data, removeItem }: Data) => {
         className={`${
           data.length < 3
             ? 'hidden'
-            : 'max-w-fit flex items-center gap-2 group my-4 text-center mx-auto'
+            : 'max-w-fit flex items-center gap-2 group mt-4 text-center mx-auto'
         }`}
       >
         <div>

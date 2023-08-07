@@ -165,7 +165,7 @@ export const ListUrls = ({ data, setCount }: Data) => {
 
                     <DialogContent>
                       <DialogHeader>
-                        <DialogTitle>Are you sure absolutely sure?</DialogTitle>
+                        <DialogTitle>Are you absolutely sure?</DialogTitle>
                         <DialogDescription className="pt-1">
                           This action cannot be undone.
                         </DialogDescription>

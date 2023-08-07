@@ -48,7 +48,7 @@ function App() {
 
         localStorage.setItem('urls', JSON.stringify(urlList));
       } else {
-        urlList = JSON.parse(localStorage.getItem('urls')!) as any[];
+        urlList = JSON.parse(localStorage.getItem('urls')!) as object[];
 
         urlList.unshift({
           shortId: data.id,
@@ -66,7 +66,7 @@ function App() {
 
   return (
     <>
-      <h1 className="lg:text-7xl mt-32 max-[300px]:text-[10vw] max-[300px]:leading-tight sm:tracking-tight text-4xl sm:text-5xl mx-auto text-center uppercase font-bold mb-14 sm:mb-20">
+      <h1 className="lg:text-7xl mt-[7.5rem] max-[300px]:text-[10vw] max-[300px]:leading-tight sm:tracking-tight text-4xl sm:text-5xl mx-auto text-center uppercase font-bold mb-14 sm:mb-20">
         Make your URL'S look{' '}
         <span className="bg-clip-text bg-gradient-to-br from-gray-500 to-gray-950 to-75% text-transparent">
           Magnificent

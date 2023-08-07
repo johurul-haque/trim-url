@@ -28,7 +28,7 @@ export const Header = () => {
             viewBox="0 0 24 24"
             strokeWidth={1.7}
             stroke="currentColor"
-            className="md:h-6 aspect-square max-sm:h-5"
+            className="aspect-square h-6"
           >
             <path
               strokeLinecap="round"
@@ -55,7 +55,7 @@ export const Header = () => {
           <Link
             to={'/collection'}
             onClick={toggleMenu}
-            className="sm:border-r max-sm:mb-3 max-sm:w-full max-sm:border-b max-sm:pb-3 flex items-center gap-2 pr-4 mr-2 max-sm:border-gray-400/60 border-gray-400/80"
+            className="max-sm:mb-4 max-sm:w-full flex items-center gap-2 sm:mr-4"
           >
             collection
           </Link>
@@ -63,14 +63,14 @@ export const Header = () => {
             href="https://github.com/johurul-haque/url-shortener"
             onClick={toggleMenu}
             target="_blank"
-            className="sm:p-2 max-sm:flex gap-2 rounded-full sm:hover:bg-gray-200/50 transition-colors"
+            className="sm:p-2 max-sm:flex gap-2 rounded-full sm:hover:bg-slate-200/90 sm:focus-visible:bg-slate-200/90 transition-colors"
             rel="noopener noreferrer"
           >
             <Github
               strokeWidth={1.7}
               className="md:h-6 md:w-6 max-sm:h-5 max-sm:w-5"
             />
-            <span className="sm:sr-only">Source code</span>
+            <span className="sm:sr-only">source code</span>
           </a>
         </div>
       </nav>

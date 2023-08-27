@@ -24,7 +24,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Header />
-        <main className="text-gray-950 flex-1 flex flex-col ring">
+        <main className="text-gray-950 flex-1 flex flex-col">
           <section className="flex-1 overflow-y-hidden flex flex-col relative w-full overflow-x-clip bg-slate-50 bg-gradient-to-t from-slate-50 to-slate-100 sm:pt-20">
             <Gradients />
             <div className="sm:container max-w-6xl flex-1 flex flex-col">

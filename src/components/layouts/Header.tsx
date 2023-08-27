@@ -14,12 +14,13 @@ export const Header = () => {
     <header className="left-1/2 font-mono -translate-x-1/2 container max-w-6xl z-[60] absolute mx-auto">
       <nav className="w-full pt-5 flex justify-between items-center">
         <Link
-          href={'/'}
           title="Link Shortener"
           className="flex gap-x-2 text-lg sm:text-xl md:text-2xl font-semibold items-center"
+          href="/"
         >
           <LinkIcon
             aria-label="Link icon"
+            aria-hidden={true}
             className="md:h-6 md:w-6 max-sm:h-5 max-sm:w-5"
           />
           shortener
@@ -32,7 +33,7 @@ export const Header = () => {
             viewBox="0 0 24 24"
             strokeWidth={1.7}
             stroke="currentColor"
-            className="md:h-6 aspect-square max-sm:h-5"
+            className="aspect-square h-6"
             aria-hidden={true}
           >
             <path
@@ -42,11 +43,10 @@ export const Header = () => {
             />
           </svg>
         </button>
-
         <div
           className={`${
             isActive ? 'max-sm:scale-100' : 'max-sm:scale-0'
-          } sm:flex max-sm:origin-top-right max-sm:transition-transform max-sm:absolute top-7 max-sm:rounded max-sm:shadow-2xl max-sm:px-7 max-sm:py-5 max-sm:bg-gradient-to-br from-slate-50 to-slate-100 right-7 items-center`}
+          } sm:flex max-sm:origin-top-right max-sm:transition-transform max-sm:absolute top-7 max-sm:rounded max-sm:shadow-2xl max-sm:pl-7 max-sm:pr-14 max-sm:py-5 max-sm:bg-gradient-to-br from-slate-50 to-slate-100 right-7 items-center`}
         >
           <button
             onClick={toggleMenu}
@@ -54,16 +54,15 @@ export const Header = () => {
           >
             <span className="sr-only">Close menu</span>
             <X
-              strokeWidth={1.7}
               aria-hidden={true}
+              strokeWidth={1.7}
               className="aspect-square h-5 hover:stroke-gray-600 stroke-gray-500"
             />
           </button>
-
           <Link
-            href={'/collection'}
+            className="max-sm:mb-4 max-sm:w-full flex items-center gap-2 sm:mr-4"
             onClick={toggleMenu}
-            className="sm:border-r max-sm:mb-3 max-sm:w-full max-sm:border-b max-sm:pb-3 flex items-center gap-2 pr-4 mr-2 max-sm:border-gray-400/60 border-gray-400/80"
+            href="/collection"
           >
             collection
           </Link>
@@ -71,15 +70,16 @@ export const Header = () => {
             href="https://github.com/johurul-haque/url-shortener"
             onClick={toggleMenu}
             target="_blank"
-            className="sm:p-2 max-sm:flex gap-2 rounded-full sm:hover:bg-gray-200/50 transition-colors"
+            className="sm:p-2 max-sm:flex gap-2 rounded-full sm:hover:bg-slate-200/90 sm:focus-visible:bg-slate-200/90 transition-colors"
             rel="noopener noreferrer"
+            title="source code"
           >
             <Github
-              strokeWidth={1.7}
               aria-hidden={true}
-              className="md:h-6 md:w-6 max-sm:h-5 max-sm:w-5"
+              strokeWidth={1.7}
+              className="md:h-6 md:w-6 max-sm:hidden"
             />
-            <span className="sm:sr-only">Source code</span>
+            <span className="sm:sr-only">source code</span>
           </a>
         </div>
       </nav>

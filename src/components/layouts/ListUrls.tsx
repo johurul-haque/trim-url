@@ -1,7 +1,3 @@
-import { useToast } from '@/components/ui/use-toast';
-import copy from 'copy-text-to-clipboard';
-import { ChevronRight, Copy, Trash2 } from 'lucide-react';
-
 import {
   Table,
   TableBody,
@@ -11,8 +7,12 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { useToast } from '@/components/ui/use-toast';
 import server from '@/config';
+import { removeUrl, updateUrl } from '@/utils';
 import { DialogClose } from '@radix-ui/react-dialog';
+import copy from 'copy-text-to-clipboard';
+import { ChevronRight, Copy, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '../ui/button';
 import {
@@ -32,87 +32,15 @@ interface Data {
     redirectUrl: string;
     timeStamp: string;
   }[];
-  setCount: React.Dispatch<React.SetStateAction<number>>;
+  setState: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-interface Response {
-  acknowledged: boolean;
-  modifiedCount: number;
-  upsertedId: null;
-  upsertedCount: number;
-  matchedCount: number;
-}
-
-export const ListUrls = ({ data, setCount }: Data) => {
+export const ListUrls = ({ data, setState }: Data) => {
   const { toast } = useToast();
 
-  const copyUrl = (url: string) => {
-    copy(`https://trimurl.vercel.app/${url}`);
+  const copyUrl = (id: string) => {
+    copy(server + '/' + id);
     toast({ description: 'Copied to clipboard' });
-  };
-
-  const removeItem = async (id: string) => {
-    const index = data.findIndex(
-      ({ shortId }: { shortId: string }) => shortId === id
-    );
-
-    if (index > -1) {
-      data.splice(index, 1);
-      localStorage.removeItem('urls');
-      localStorage.setItem('urls', JSON.stringify(data));
-      toast({ description: 'Item removed successfully' });
-      setCount(data.length);
-
-      await fetch(`${server}/delete?id=${id}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-    }
-  };
-
-  const updateUrl = async (e: React.FormEvent<HTMLFormElement>, id: string) => {
-    e.preventDefault();
-
-    const response = await fetch(`${server}/edit?id=${id}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        url: ((e.target as HTMLFormElement).newUrl as HTMLInputElement).value,
-      }),
-    });
-
-    const result = (await response.json()) as Response;
-    const index = data.findIndex(
-      ({ shortId }: { shortId: string }) => shortId === id
-    );
-
-    if (index > -1) {
-      const currentData: { redirectUrl: string }[] = data.splice(index, 1);
-
-      currentData[0].redirectUrl = (
-        (e.target as HTMLFormElement).newUrl as HTMLInputElement
-      ).value;
-
-      const newTableData = [
-        ...data.slice(0, index),
-        ...currentData,
-        ...data.slice(index),
-      ];
-
-      localStorage.removeItem('urls');
-      localStorage.setItem('urls', JSON.stringify(newTableData));
-      setCount((prev: number) => prev + 1);
-    }
-
-    if (result.modifiedCount > 0) {
-      toast({ description: 'Updated successfully' });
-    } else {
-      toast({ description: 'Already up to date' });
-    }
   };
 
   return (
@@ -139,10 +67,10 @@ export const ListUrls = ({ data, setCount }: Data) => {
                 <a
                   target="_blank"
                   rel="noopener noreferrer"
-                  href={`https://shortesturl.vercel.app/${urlInfo.shortId}`}
+                  href={server + '/' + urlInfo.shortId}
                   className="pr-2"
                 >
-                  <span className="text-gray-500">shortesturl.vercel.app/</span>
+                  <span className="text-gray-500">trimurl.vercel.app/</span>
                   {urlInfo.shortId}
                 </a>
 
@@ -175,7 +103,14 @@ export const ListUrls = ({ data, setCount }: Data) => {
                         </DialogDescription>
                       </DialogHeader>
                       <Button
-                        onClick={() => void removeItem(urlInfo.shortId)}
+                        onClick={() =>
+                          void removeUrl({
+                            id: urlInfo.shortId,
+                            data,
+                            setState,
+                            toast,
+                          })
+                        }
                         className="block lowercase font-mono bg-rose-500 hover:bg-rose-400 max-sm:mx-auto ml-auto focus-visible:ring-rose-300"
                         variant={'destructive'}
                       >
@@ -227,7 +162,15 @@ export const ListUrls = ({ data, setCount }: Data) => {
                     <DialogFooter>
                       <form
                         className="w-full"
-                        onSubmit={(e) => void updateUrl(e, urlInfo.shortId)}
+                        onSubmit={(e) =>
+                          void updateUrl({
+                            e,
+                            id: urlInfo.shortId,
+                            toast,
+                            data,
+                            setState,
+                          })
+                        }
                       >
                         <Input
                           type="url"

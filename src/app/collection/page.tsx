@@ -21,6 +21,7 @@ import {
 } from '@/components/ui/table';
 import { useToast } from '@/components/ui/use-toast';
 import server from '@/config';
+import { removeUrl, updateUrl } from '@/utils';
 import { DialogClose } from '@radix-ui/react-dialog';
 import copy from 'copy-text-to-clipboard';
 import { Copy, Trash2 } from 'lucide-react';
@@ -33,91 +34,20 @@ interface Data {
   timeStamp: string;
 }
 
-interface Response {
-  acknowledged: boolean;
-  modifiedCount: number;
-  upsertedId: null;
-  upsertedCount: number;
-  matchedCount: number;
-}
-
 export default function Collection() {
   const [tableData, setTableData] = useState([]);
-  const [count, setCount] = useState(0.5);
+  const [state, setState] = useState(false);
 
   const { toast } = useToast();
 
   useEffect(() => {
     const urlList = JSON.parse(localStorage.getItem('urls')!) as [];
     setTableData(urlList || []);
-  }, [count]);
+  }, [state]);
 
-  const removeItem = async (id: string) => {
-    const index = tableData.findIndex(
-      ({ shortId }: { shortId: string }) => shortId === id
-    );
-
-    if (index > -1) {
-      tableData.splice(index, 1);
-      localStorage.removeItem('urls');
-      localStorage.setItem('urls', JSON.stringify(tableData));
-      toast({ description: 'Item removed successfully' });
-      setCount(tableData.length);
-
-      await fetch(`${server}/delete/${id}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-    }
-  };
   const copyUrl = (url: string) => {
     copy(`https://shortesturl.vercel.app/${url}`);
     toast({ description: 'Copied to clipboard' });
-  };
-
-  const updateUrl = async (e: React.FormEvent<HTMLFormElement>, id: string) => {
-    e.preventDefault();
-    const response = await fetch(`${server}/edit/${id}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        url: ((e.target as HTMLFormElement).newUrl as HTMLInputElement).value,
-      }),
-    });
-
-    const result = (await response.json()) as Response;
-
-    const index = tableData.findIndex(
-      ({ shortId }: { shortId: string }) => shortId === id
-    );
-
-    if (index > -1) {
-      const currentData: { redirectUrl: string }[] = tableData.splice(index, 1);
-
-      currentData[0].redirectUrl = (
-        (e.target as HTMLFormElement).newUrl as HTMLInputElement
-      ).value;
-
-      const newTableData = [
-        ...tableData.slice(0, index),
-        ...currentData,
-        ...tableData.slice(index),
-      ];
-
-      localStorage.removeItem('urls');
-      localStorage.setItem('urls', JSON.stringify(newTableData));
-      setCount((prev) => prev + 1);
-    }
-
-    if (result.modifiedCount > 0) {
-      toast({ description: 'Updated successfully' });
-    } else {
-      toast({ description: 'Already up to date' });
-    }
   };
 
   return (
@@ -149,10 +79,10 @@ export default function Collection() {
                 <a
                   target="_blank"
                   rel="noopener noreferrer"
-                  href={`https://shortesturl.vercel.app/${urlInfo.shortId}`}
+                  href={server + '/' + urlInfo.shortId}
                   className="pr-2"
                 >
-                  <span className="text-gray-500">shortesturl.vercel.app/</span>
+                  <span className="text-gray-500">trimurl.vercel.app/</span>
                   {urlInfo.shortId}
                 </a>
 
@@ -186,8 +116,15 @@ export default function Collection() {
                       </DialogHeader>
                       <DialogFooter>
                         <Button
-                          onClick={() => void removeItem(urlInfo.shortId)}
-                          className="block lowercase font-mono bg-rose-500 hover:bg-rose-400 max-sm:mx-auto ml-auto"
+                          onClick={() =>
+                            void removeUrl({
+                              id: urlInfo.shortId,
+                              data: tableData,
+                              setState,
+                              toast,
+                            })
+                          }
+                          className="block lowercase font-mono bg-rose-500 hover:bg-rose-400 focus-visible:ring-rose-300 max-sm:mx-auto ml-auto"
                           variant={'destructive'}
                         >
                           Delete
@@ -242,7 +179,15 @@ export default function Collection() {
                       <DialogFooter>
                         <form
                           className="w-full"
-                          onSubmit={(e) => void updateUrl(e, urlInfo.shortId)}
+                          onSubmit={(e) =>
+                            void updateUrl({
+                              e,
+                              id: urlInfo.shortId,
+                              data: tableData,
+                              setState,
+                              toast,
+                            })
+                          }
                         >
                           <Input
                             type="url"

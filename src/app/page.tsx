@@ -15,6 +15,7 @@ interface Response {
 export default function Home() {
   const [tableData, setTableData] = useState([]);
   const [count, setCount] = useState(0.5);
+  const [state, setState] = useState(true);
 
   const { toast } = useToast();
 
@@ -53,7 +54,7 @@ export default function Home() {
 
         localStorage.setItem('urls', JSON.stringify(urlList));
       } else {
-        urlList = JSON.parse(localStorage.getItem('urls')!) as any[];
+        urlList = JSON.parse(localStorage.getItem('urls')!) as object[];
 
         urlList.unshift({
           shortId: data.id,
@@ -107,7 +108,7 @@ export default function Home() {
         </div>
       </form>
       {tableData.length > 0 && (
-        <ListUrls data={tableData} setCount={setCount} />
+        <ListUrls data={tableData} setState={setState} />
       )}
     </>
   );

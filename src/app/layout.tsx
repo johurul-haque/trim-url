@@ -22,6 +22,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" href="./icon.svg" type="image/svg" sizes="any" />
+      </head>
       <body className={inter.className}>
         <Header />
         <main className="text-gray-950 flex-1 flex flex-col">

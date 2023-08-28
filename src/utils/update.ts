@@ -23,7 +23,7 @@ const updateUrl = async ({
 }) => {
   e.preventDefault();
 
-  const response = await fetch(`${server}/edit?id=${id}`, {
+  const response = await fetch(server + `edit?id=${id}`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',

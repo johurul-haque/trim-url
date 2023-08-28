@@ -1,7 +1,8 @@
 import pattern from '@/assets/pattern.svg';
 import { Header } from '@/components/layouts/Header';
 import { Gradients } from '@/components/ui/gradients';
-import { Toaster } from '@/components/ui/toaster';
+// import { Toaster } from '@/components/ui/toaster';
+import { Toaster } from '@/components/ui';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
@@ -32,7 +33,7 @@ export default function RootLayout({
             <Gradients />
             <div className="sm:container max-w-6xl flex-1 flex flex-col">
               <div
-                className={`p-4 relative flex-1 z-50 bg-opacity-60 sm:px-14 rounded-t-lg shadow-[2px_8px_30px_-8px_rgba(0,0,0,0.25)]`}
+                className="p-4 relative flex-1 z-50 bg-opacity-60 sm:px-14 rounded-t-lg shadow-[2px_8px_30px_-8px_rgba(0,0,0,0.25)]"
                 style={{
                   backgroundImage: `url(${pattern.src})`,
                 }}

@@ -1,4 +1,5 @@
+import copyUrl from './copy';
 import removeUrl from './remove';
 import updateUrl from './update';
 
-export { removeUrl, updateUrl };
+export { copyUrl, removeUrl, updateUrl };

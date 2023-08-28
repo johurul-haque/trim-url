@@ -1,30 +1,10 @@
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
-import { useToast } from '@/components/ui/use-toast';
+import PencilIcon from '@/assets/icons/pencil';
+import { Button, D, Input, T, toast } from '@/components/ui';
 import server from '@/config';
-import { removeUrl, updateUrl } from '@/utils';
+import { copyUrl, removeUrl, updateUrl } from '@/utils';
 import { DialogClose } from '@radix-ui/react-dialog';
-import copy from 'copy-text-to-clipboard';
 import { ChevronRight, Copy, Trash2 } from 'lucide-react';
 import Link from 'next/link';
-import { Button } from '../ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '../ui/dialog';
-import { Input } from '../ui/input';
 
 interface Data {
   data: {
@@ -36,38 +16,31 @@ interface Data {
 }
 
 export const ListUrls = ({ data, setState }: Data) => {
-  const { toast } = useToast();
-
-  const copyUrl = (id: string) => {
-    copy(server + '/' + id);
-    toast({ description: 'Copied to clipboard' });
-  };
-
   return (
     <>
-      <Table className="lg:max-w-2xl md:max-w-xl mx-auto mt-5">
-        <TableCaption className={`${data.length > 2 ? 'hidden' : ''}`}>
+      <T.Table className="lg:max-w-2xl md:max-w-xl mx-auto mt-5">
+        <T.TableCaption className={`${data.length > 2 ? 'hidden' : ''}`}>
           A list of your short links.
-        </TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="min-w-[130px]">Date Creation</TableHead>
-            <TableHead className="min-w-[250px]">Short URL</TableHead>
-            <TableHead className="min-w-[250px]">Redirects to</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
+        </T.TableCaption>
+        <T.TableHeader>
+          <T.TableRow>
+            <T.TableHead className="min-w-[130px]">Date Creation</T.TableHead>
+            <T.TableHead className="min-w-[250px]">Short URL</T.TableHead>
+            <T.TableHead className="min-w-[250px]">Redirects to</T.TableHead>
+          </T.TableRow>
+        </T.TableHeader>
+        <T.TableBody>
           {data.map((urlInfo, i) => (
-            <TableRow
+            <T.TableRow
               key={urlInfo.shortId}
               className={`${i > 1 ? 'hidden' : ''}`}
             >
-              <TableCell>{urlInfo.timeStamp}</TableCell>
-              <TableCell className="font-medium group relative">
+              <T.TableCell>{urlInfo.timeStamp}</T.TableCell>
+              <T.TableCell className="font-medium group relative">
                 <a
                   target="_blank"
                   rel="noopener noreferrer"
-                  href={server + '/' + urlInfo.shortId}
+                  href={server + urlInfo.shortId}
                   className="pr-2"
                 >
                   <span className="text-gray-500">trimurl.vercel.app/</span>
@@ -77,8 +50,7 @@ export const ListUrls = ({ data, setState }: Data) => {
                 <div className="absolute border pt-1 px-3 bg-opacity-95 rounded bg-slate-100 sm:scale-0 sm:group-hover:scale-100 focus-within:scale-100 origin-right transition-transform right-0 top-1/2 -translate-y-1/2 space-x-4 sm:space-x-3">
                   <button
                     title="Copy to Clipboard"
-                    onClick={() => copyUrl(urlInfo.shortId)}
-                    className=""
+                    onClick={() => copyUrl({ path: urlInfo.shortId, toast })}
                   >
                     <span className="sr-only">Copy to clipboard</span>
                     <Copy
@@ -86,22 +58,22 @@ export const ListUrls = ({ data, setState }: Data) => {
                       className="w-5 h-5 hover:stroke-gray-600 stroke-gray-500"
                     />
                   </button>
-                  <Dialog>
-                    <DialogTrigger title="Remove from list">
+                  <D.Dialog>
+                    <D.DialogTrigger title="Remove from list">
                       <span className="sr-only">Remove from list</span>
                       <Trash2
                         aria-hidden={true}
                         className="w-5 h-5 hover:stroke-gray-600 stroke-gray-500"
                       />
-                    </DialogTrigger>
+                    </D.DialogTrigger>
 
-                    <DialogContent>
-                      <DialogHeader>
-                        <DialogTitle>Are you absolutely sure?</DialogTitle>
-                        <DialogDescription className="pt-1">
+                    <D.DialogContent>
+                      <D.DialogHeader>
+                        <D.DialogTitle>Are you absolutely sure?</D.DialogTitle>
+                        <D.DialogDescription className="pt-1">
                           This action is permanent and cannot be undone.
-                        </DialogDescription>
-                      </DialogHeader>
+                        </D.DialogDescription>
+                      </D.DialogHeader>
                       <Button
                         onClick={() =>
                           void removeUrl({
@@ -116,11 +88,11 @@ export const ListUrls = ({ data, setState }: Data) => {
                       >
                         Delete
                       </Button>
-                    </DialogContent>
-                  </Dialog>
+                    </D.DialogContent>
+                  </D.Dialog>
                 </div>
-              </TableCell>
-              <TableCell className="group relative">
+              </T.TableCell>
+              <T.TableCell className="group relative">
                 <a
                   href={urlInfo.redirectUrl}
                   target="_blank"
@@ -129,37 +101,22 @@ export const ListUrls = ({ data, setState }: Data) => {
                 >
                   {urlInfo.redirectUrl}
                 </a>
-                <Dialog>
-                  <DialogTrigger
+                <D.Dialog>
+                  <D.DialogTrigger
                     title="Edit Link"
                     className="absolute border py-1 px-3 bg-opacity-95 rounded bg-slate-100 sm:scale-0 sm:group-hover:scale-100 focus-visible:scale-100 transition-transform right-0 top-1/2 -translate-y-1/2"
                   >
                     <span className="sr-only">Edit Link</span>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="w-5 h-5 hover:stroke-gray-600 stroke-gray-500"
-                      aria-hidden={true}
-                    >
-                      <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-                      <path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4Z" />
-                    </svg>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>Update URL</DialogTitle>
-                      <DialogDescription>
+                    <PencilIcon className="w-5 h-5 hover:stroke-gray-600 stroke-gray-500" />
+                  </D.DialogTrigger>
+                  <D.DialogContent>
+                    <D.DialogHeader>
+                      <D.DialogTitle>Update URL</D.DialogTitle>
+                      <D.DialogDescription>
                         Modify this URL and we would update it for you.
-                      </DialogDescription>
-                    </DialogHeader>
-                    <DialogFooter>
+                      </D.DialogDescription>
+                    </D.DialogHeader>
+                    <D.DialogFooter>
                       <form
                         className="w-full"
                         onSubmit={(e) =>
@@ -181,21 +138,21 @@ export const ListUrls = ({ data, setState }: Data) => {
                         />
                         <DialogClose asChild>
                           <Button
-                            className="font-mono peer-invalid:pointer-events-none lowercase mt-3 max-sm:mx-auto ml-auto block focus-visible:ring-gray-500"
+                            className="font-mono peer-invalid:pointer-events-none peer-invalid:opacity-70 lowercase mt-3 max-sm:mx-auto ml-auto block focus-visible:ring-gray-500"
                             type="submit"
                           >
                             Save
                           </Button>
                         </DialogClose>
                       </form>
-                    </DialogFooter>
-                  </DialogContent>
-                </Dialog>
-              </TableCell>
-            </TableRow>
+                    </D.DialogFooter>
+                  </D.DialogContent>
+                </D.Dialog>
+              </T.TableCell>
+            </T.TableRow>
           ))}
-        </TableBody>
-      </Table>
+        </T.TableBody>
+      </T.Table>
       <Link
         href={'/collection'}
         className={`${

@@ -22,7 +22,7 @@ export default function Home() {
   useEffect(() => {
     const urlList = JSON.parse(localStorage.getItem('urls')!) as [];
     setTableData(urlList || []);
-  }, [count]);
+  }, [count, state]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

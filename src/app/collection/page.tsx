@@ -1,29 +1,8 @@
 'use client';
-import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
-import { useToast } from '@/components/ui/use-toast';
+import { Button, D, Input, T, toast } from '@/components/ui';
 import server from '@/config';
-import { removeUrl, updateUrl } from '@/utils';
+import { copyUrl, removeUrl, updateUrl } from '@/utils';
 import { DialogClose } from '@radix-ui/react-dialog';
-import copy from 'copy-text-to-clipboard';
 import { Copy, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -38,17 +17,10 @@ export default function Collection() {
   const [tableData, setTableData] = useState([]);
   const [state, setState] = useState(false);
 
-  const { toast } = useToast();
-
   useEffect(() => {
     const urlList = JSON.parse(localStorage.getItem('urls')!) as [];
     setTableData(urlList || []);
   }, [state]);
-
-  const copyUrl = (url: string) => {
-    copy(`https://shortesturl.vercel.app/${url}`);
-    toast({ description: 'Copied to clipboard' });
-  };
 
   return (
     <>
@@ -58,28 +30,28 @@ export default function Collection() {
       >
         Back
       </Link>
-      <Table className="mx-auto max-w-xl sm:max-w-2xl lg:max-w-4xl my-5">
-        <TableCaption>
+      <T.Table className="mx-auto max-w-xl sm:max-w-2xl lg:max-w-4xl my-5">
+        <T.TableCaption>
           {tableData.length > 0
             ? 'A list of your short links.'
             : 'Your collection is currently empty.'}
-        </TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="min-w-[130px]">Date Creation</TableHead>
-            <TableHead>Short URL</TableHead>
-            <TableHead>Redirects to</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
+        </T.TableCaption>
+        <T.TableHeader>
+          <T.TableRow>
+            <T.TableHead className="min-w-[130px]">Date Creation</T.TableHead>
+            <T.TableHead>Short URL</T.TableHead>
+            <T.TableHead>Redirects to</T.TableHead>
+          </T.TableRow>
+        </T.TableHeader>
+        <T.TableBody>
           {tableData.map((urlInfo: Data) => (
-            <TableRow key={urlInfo.shortId}>
-              <TableCell>{urlInfo.timeStamp}</TableCell>
-              <TableCell className="font-medium justify-between flex items-center gap-4">
+            <T.TableRow key={urlInfo.shortId}>
+              <T.TableCell>{urlInfo.timeStamp}</T.TableCell>
+              <T.TableCell className="font-medium justify-between flex items-center gap-4">
                 <a
                   target="_blank"
                   rel="noopener noreferrer"
-                  href={server + '/' + urlInfo.shortId}
+                  href={server + urlInfo.shortId}
                   className="pr-2"
                 >
                   <span className="text-gray-500">trimurl.vercel.app/</span>
@@ -89,8 +61,7 @@ export default function Collection() {
                 <div className="border py-2 px-3 bg-opacity-95 rounded bg-slate-100 flex gap-3">
                   <button
                     title="Copy to Clipboard"
-                    onClick={() => copyUrl(urlInfo.shortId)}
-                    className=""
+                    onClick={() => copyUrl({ path: urlInfo.shortId, toast })}
                   >
                     <span className="sr-only">Copy to clipboard</span>
                     <Copy
@@ -98,23 +69,23 @@ export default function Collection() {
                       className="w-5 h-5 hover:stroke-gray-600 stroke-gray-500"
                     />
                   </button>
-                  <Dialog>
-                    <DialogTrigger title="Remove from list">
+                  <D.Dialog>
+                    <D.DialogTrigger title="Remove from list">
                       <span className="sr-only">Remove from list</span>
                       <Trash2
                         aria-hidden={true}
                         className="w-5 h-5 hover:stroke-gray-600 stroke-gray-500"
                       />
-                    </DialogTrigger>
+                    </D.DialogTrigger>
 
-                    <DialogContent>
-                      <DialogHeader>
-                        <DialogTitle>Are you sure absolutely sure?</DialogTitle>
-                        <DialogDescription className="pt-1">
+                    <D.DialogContent>
+                      <D.DialogHeader>
+                        <D.DialogTitle>Are you absolutely sure?</D.DialogTitle>
+                        <D.DialogDescription className="pt-1">
                           This action cannot be undone.
-                        </DialogDescription>
-                      </DialogHeader>
-                      <DialogFooter>
+                        </D.DialogDescription>
+                      </D.DialogHeader>
+                      <D.DialogFooter>
                         <Button
                           onClick={() =>
                             void removeUrl({
@@ -129,13 +100,13 @@ export default function Collection() {
                         >
                           Delete
                         </Button>
-                      </DialogFooter>
-                    </DialogContent>
-                  </Dialog>
+                      </D.DialogFooter>
+                    </D.DialogContent>
+                  </D.Dialog>
                 </div>
-              </TableCell>
+              </T.TableCell>
 
-              <TableCell>
+              <T.TableCell>
                 <div className="flex items-center justify-between gap-4">
                   <a
                     href={urlInfo.redirectUrl}
@@ -146,8 +117,8 @@ export default function Collection() {
                     {urlInfo.redirectUrl}
                   </a>
 
-                  <Dialog>
-                    <DialogTrigger
+                  <D.Dialog>
+                    <D.DialogTrigger
                       title="Edit Link"
                       className="border py-2 px-3 bg-opacity-95 rounded bg-slate-100"
                     >
@@ -168,15 +139,15 @@ export default function Collection() {
                         <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
                         <path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4Z" />
                       </svg>
-                    </DialogTrigger>
-                    <DialogContent>
-                      <DialogHeader>
-                        <DialogTitle>Update URL</DialogTitle>
-                        <DialogDescription>
+                    </D.DialogTrigger>
+                    <D.DialogContent>
+                      <D.DialogHeader>
+                        <D.DialogTitle>Update URL</D.DialogTitle>
+                        <D.DialogDescription>
                           Modify this URL and we would update it for you.
-                        </DialogDescription>
-                      </DialogHeader>
-                      <DialogFooter>
+                        </D.DialogDescription>
+                      </D.DialogHeader>
+                      <D.DialogFooter>
                         <form
                           className="w-full"
                           onSubmit={(e) =>
@@ -205,15 +176,15 @@ export default function Collection() {
                             </Button>
                           </DialogClose>
                         </form>
-                      </DialogFooter>
-                    </DialogContent>
-                  </Dialog>
+                      </D.DialogFooter>
+                    </D.DialogContent>
+                  </D.Dialog>
                 </div>
-              </TableCell>
-            </TableRow>
+              </T.TableCell>
+            </T.TableRow>
           ))}
-        </TableBody>
-      </Table>
+        </T.TableBody>
+      </T.Table>
     </>
   );
 }

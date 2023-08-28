@@ -26,7 +26,7 @@ const removeUrl = async ({
     toast({ description: 'Item removed successfully' });
     setState((prev) => !prev);
 
-    await fetch(`${server}/delete?id=${id}`, {
+    await fetch(server + `delete?id=${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',

@@ -1,6 +1,6 @@
 'use client';
 import { ListUrls } from '@/components/layouts/ListUrls';
-import { useToast } from '@/components/ui/use-toast';
+import { toast } from '@/components/ui';
 import server from '@/config';
 import { Scissors } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -16,8 +16,6 @@ export default function Home() {
   const [tableData, setTableData] = useState([]);
   const [count, setCount] = useState(0.5);
   const [state, setState] = useState(true);
-
-  const { toast } = useToast();
 
   useEffect(() => {
     const urlList = JSON.parse(localStorage.getItem('urls')!) as [];

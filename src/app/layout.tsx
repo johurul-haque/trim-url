@@ -1,8 +1,7 @@
 import pattern from '@/assets/pattern.svg';
 import { Header } from '@/components/layouts/Header';
-import { Gradients } from '@/components/ui/gradients';
-// import { Toaster } from '@/components/ui/toaster';
 import { Toaster } from '@/components/ui';
+import { Gradients } from '@/components/ui/gradients';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';

@@ -41,13 +41,13 @@ export const ListUrls = ({ data, setState }: Data) => {
                   target="_blank"
                   rel="noopener noreferrer"
                   href={server + urlInfo.shortId}
-                  className="pr-2"
+                  className="pr-16"
                 >
                   <span className="text-gray-500">trimurl.vercel.app/</span>
                   {urlInfo.shortId}
                 </a>
 
-                <div className="absolute border pt-1 px-3 bg-opacity-95 rounded bg-slate-100 sm:scale-0 sm:group-hover:scale-100 focus-within:scale-100 origin-right transition-transform right-0 top-1/2 -translate-y-1/2 space-x-4 sm:space-x-3">
+                <div className="absolute border pt-1 px-3 bg-opacity-95 rounded bg-slate-100 lg:scale-0 lg:group-hover:scale-100 focus-within:scale-100 origin-right transition-transform right-0 top-1/2 -translate-y-1/2 space-x-4 sm:space-x-3">
                   <button
                     title="Copy to Clipboard"
                     onClick={() => copyUrl({ path: urlInfo.shortId, toast })}
@@ -97,14 +97,14 @@ export const ListUrls = ({ data, setState }: Data) => {
                   href={urlInfo.redirectUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-500 break-all line-clamp-1"
+                  className="text-gray-500 break-all line-clamp-1 pr-7"
                 >
                   {urlInfo.redirectUrl}
                 </a>
                 <D.Dialog>
                   <D.DialogTrigger
                     title="Edit Link"
-                    className="absolute border py-1 px-3 bg-opacity-95 rounded bg-slate-100 sm:scale-0 sm:group-hover:scale-100 focus-visible:scale-100 transition-transform right-0 top-1/2 -translate-y-1/2"
+                    className="absolute border py-1 px-3 bg-opacity-95 rounded bg-slate-100 lg:scale-0 lg:group-hover:scale-100 focus-visible:scale-100 transition-transform right-0 top-1/2 -translate-y-1/2"
                   >
                     <span className="sr-only">Edit Link</span>
                     <PencilIcon className="w-5 h-5 hover:stroke-gray-600 stroke-gray-500" />

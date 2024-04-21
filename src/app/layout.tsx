@@ -1,5 +1,5 @@
 import pattern from '@/assets/pattern.svg';
-import { Header } from '@/components/layouts/Header';
+import { Header } from '@/components/layouts/header';
 import { Toaster } from '@/components/ui';
 import { Gradients } from '@/components/ui/gradients';
 import type { Metadata } from 'next';

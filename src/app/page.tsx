@@ -1,69 +1,60 @@
 'use client';
-import { ListUrls } from '@/components/layouts/ListUrls';
+
+import { ListUrls } from '@/components/layouts/list-urls';
 import { toast } from '@/components/ui';
-import server from '@/config';
+import { responseSchema } from '@/schema/response';
+import axios from 'axios';
 import { Scissors } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 
-interface Response {
-  status: number;
-  id: string;
-  redirectUrl: string;
-  timeStamp: string;
-}
+type Inputs = {
+  url: string;
+};
 
 export default function Home() {
   const [tableData, setTableData] = useState([]);
-  const [count, setCount] = useState(0.5);
   const [state, setState] = useState(true);
 
+  const { register, handleSubmit } = useForm<Inputs>();
+
   useEffect(() => {
-    const urlList = JSON.parse(localStorage.getItem('urls')!) as [];
+    const urlList = JSON.parse(localStorage.getItem('urls')!);
     setTableData(urlList || []);
-  }, [count, state]);
+  }, [state]);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const onSubmit: SubmitHandler<Inputs> = async ({ url }) => {
+    try {
+      toast({ description: 'Generating your short link' });
 
-    toast({
-      description: 'Your message has been sent.',
-    });
+      const res = await axios.post('/api', { url });
+      const data = responseSchema.parse(res.data);
 
-    const response = await fetch(server, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        url: ((e.target as HTMLFormElement).url as HTMLInputElement).value,
-      }),
-    });
-    const data = (await response.json()) as Response;
-
-    if (data) {
+      // Saving data in local storage
       let urlList = [];
 
       if (!localStorage.getItem('urls')) {
         urlList.unshift({
-          shortId: data.id,
+          shortId: data.shortId,
           redirectUrl: data.redirectUrl,
-          timeStamp: data.timeStamp,
+          timeStamp: data.createdAt,
         });
-
-        localStorage.setItem('urls', JSON.stringify(urlList));
       } else {
-        urlList = JSON.parse(localStorage.getItem('urls')!) as object[];
+        urlList = JSON.parse(localStorage.getItem('urls')!);
 
         urlList.unshift({
-          shortId: data.id,
+          shortId: data.shortId,
           redirectUrl: data.redirectUrl,
-          timeStamp: data.timeStamp,
+          timeStamp: data.createdAt,
         });
-
-        localStorage.setItem('urls', JSON.stringify(urlList));
       }
-      setCount(urlList.length);
-      setTableData(JSON.parse(localStorage.getItem('urls')!) as []);
+      
+      localStorage.setItem('urls', JSON.stringify(urlList));
+
+      setState((prev) => !prev);
+      setTableData(JSON.parse(localStorage.getItem('urls')!));
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -75,15 +66,13 @@ export default function Home() {
           Magnificent
         </span>
       </h1>
-
       <form
         className="lg:max-w-2xl md:max-w-xl max-w-md mx-auto"
-        onSubmit={(e) => void handleSubmit(e)}
+        onSubmit={handleSubmit(onSubmit)}
       >
         <div className="sm:text-lg sm:flex gap-4 relative">
           <input
-            name="url"
-            id="url"
+            {...register('url')}
             type="url"
             className="block peer max-sm:py-4 sm:placeholder-transparent outline-none rounded-xl border-2 sm:h-16 w-full shadow-2xl px-7 focus:border-gray-400 bg-slate-50 transition-color"
             placeholder="Paste your URL"
@@ -105,9 +94,8 @@ export default function Home() {
           </label>
         </div>
       </form>
-      {tableData.length > 0 && (
-        <ListUrls data={tableData} setState={setState} />
-      )}
+
+      {tableData.length && <ListUrls data={tableData} setState={setState} />}
     </>
   );
 }

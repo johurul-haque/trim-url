@@ -1,5 +1,6 @@
 import { toast } from '@/components/ui';
 import { SetStateActionType } from '@/types/set-state-action';
+import { TableData } from '@/types/table-data';
 
 export type ActionParams = {
   data: {
@@ -9,5 +10,5 @@ export type ActionParams = {
   }[];
   id: string;
   toast: typeof toast;
-  setState: SetStateActionType<boolean>;
+  setTableData: SetStateActionType<TableData[]>;
 };

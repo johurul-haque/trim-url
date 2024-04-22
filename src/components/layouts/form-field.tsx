@@ -1,4 +1,4 @@
-import { saveToLocalStorage } from '@/lib/save-to-localstorage';
+import { saveToLocalStorage } from '@/lib/save-to-local-storage';
 import { SetStateActionType } from '@/types/set-state-action';
 import { TableData } from '@/types/table-data';
 import axios from 'axios';

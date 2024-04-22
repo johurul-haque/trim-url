@@ -1,21 +1,30 @@
 import axios from 'axios';
 import { ActionParams } from './params';
 
-export async function deleteUrl({ id, data, toast, setState }: ActionParams) {
-  const index = data.findIndex(
-    ({ shortId }: { shortId: string }) => shortId === id
-  );
+export async function deleteUrl({
+  id,
+  data,
+  toast,
+  setTableData,
+}: ActionParams) {
+  const index = data.findIndex(({ shortId }) => shortId === id);
 
-  if (index > -1) {
-    data.splice(index, 1);
+  try {
+    if (index > -1) {
+      await axios.delete(`/api/${id}`);
 
-    localStorage.setItem('urls', JSON.stringify(data));
+      data.splice(index, 1);
 
-    toast({ description: 'Item removed successfully' });
-    setState((prev) => !prev);
+      localStorage.setItem('urls', JSON.stringify(data));
 
-    await axios.delete('/api/delete', {
-      params: { id },
+      toast({ description: 'Deleted successfully.' });
+      setTableData([...data]);
+    }
+  } catch (error) {
+    toast({
+      title: 'Uh oh! Something went wrong.',
+      description: 'There was a problem with your request.',
+      variant: 'destructive',
     });
   }
 }

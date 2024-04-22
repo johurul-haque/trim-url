@@ -7,10 +7,10 @@ import { UpdateRow } from './update-row';
 
 type TableProps = {
   data: TableData[];
-  setState: SetStateActionType<boolean>;
+  setTableData: SetStateActionType<TableData[]>;
 };
 
-export const Table = ({ data, setState }: TableProps) => {
+export const Table = ({ data, setTableData }: TableProps) => {
   return (
     <>
       <T.Table className="lg:max-w-2xl md:max-w-xl mx-auto mt-5">
@@ -45,7 +45,7 @@ export const Table = ({ data, setState }: TableProps) => {
                   <DeleteRow
                     data={data}
                     id={url.shortId}
-                    setState={setState}
+                    setTableData={setTableData}
                     toast={toast}
                   />
                 </div>
@@ -64,7 +64,7 @@ export const Table = ({ data, setState }: TableProps) => {
                 <UpdateRow
                   data={data}
                   id={url.shortId}
-                  setState={setState}
+                  setTableData={setTableData}
                   toast={toast}
                 />
               </T.TableCell>

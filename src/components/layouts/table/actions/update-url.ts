@@ -28,7 +28,7 @@ async function updateUrl({ data, ...params }: UpdateUrlParams) {
     localStorage.removeItem('urls');
     localStorage.setItem('urls', JSON.stringify(newTableData));
 
-    params.setState((prev) => !prev);
+    params.setTableData((prev) => !prev);
   }
 
   if (res.modifiedCount > 0) {

@@ -7,7 +7,6 @@ import { useEffect, useState } from 'react';
 
 export default function Home() {
   const [tableData, setTableData] = useState<TableData[]>([]);
-  const [state, setState] = useState(true);
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem('urls')!);
@@ -25,7 +24,9 @@ export default function Home() {
 
       <FormField setTableData={setTableData} />
 
-      {tableData.length && <Table data={tableData} setState={setState} />}
+      {tableData.length && (
+        <Table data={tableData} setTableData={setTableData} />
+      )}
     </>
   );
 }

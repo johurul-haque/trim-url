@@ -24,14 +24,14 @@ export const Header = () => {
           target="_blank"
           className="sm:p-2 max-sm:flex gap-2 rounded-full sm:hover:bg-slate-200/90 sm:focus-visible:bg-slate-200/90 transition-colors"
           rel="noopener noreferrer"
-          title="source code"
+          title="view source code"
         >
           <Github
             aria-hidden={true}
             strokeWidth={1.7}
             className="size-5 md:size-6"
           />
-          <span className="sr-only">source code</span>
+          <span className="sr-only">view source code</span>
         </a>
       </nav>
     </header>

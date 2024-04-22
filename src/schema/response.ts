@@ -5,4 +5,5 @@ export const responseSchema = z.object({
   shortId: z.string(),
   redirectUrl: z.string().url(),
   createdAt: z.string().datetime(),
+  updatedAt: z.string().datetime(),
 });

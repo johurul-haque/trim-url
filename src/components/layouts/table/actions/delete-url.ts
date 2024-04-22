@@ -9,7 +9,6 @@ export async function deleteUrl({ id, data, toast, setState }: ActionParams) {
   if (index > -1) {
     data.splice(index, 1);
 
-    localStorage.removeItem('urls');
     localStorage.setItem('urls', JSON.stringify(data));
 
     toast({ description: 'Item removed successfully' });

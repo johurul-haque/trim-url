@@ -20,12 +20,17 @@ export function FormField({ setTableData }: FormFieldProps) {
   const onSubmit: SubmitHandler<Inputs> = async ({ url }) => {
     try {
       const { update: updateToast, id } = toast({
-        description: 'Generating your short link',
+        title: '⏱️ Give a sec...',
+        description: 'Trimming your link',
       });
 
       const { data: response } = await axios.post('/api', { url });
 
-      updateToast({ description: 'Generated short link', id });
+      updateToast({
+        title: '🎉 Success!',
+        description: 'Short link generated.',
+        id,
+      });
 
       saveToLocalStorage({ data: response.data, setTableData });
     } catch (error) {

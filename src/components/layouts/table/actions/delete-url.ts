@@ -17,7 +17,7 @@ export async function deleteUrl({
 
       localStorage.setItem('urls', JSON.stringify(data));
 
-      toast({ description: 'Deleted successfully.' });
+      toast({ title: '😉 done!', description: 'Successfully deleted.' });
       setTableData([...data]);
     }
   } catch (error) {

@@ -1,6 +1,7 @@
 import { T, toast } from '@/components/ui';
 import { SetStateActionType } from '@/types/set-state-action';
 import { TableData } from '@/types/table-data';
+import { formatDate } from '@/utils/format-date';
 import { CopyUrl } from './copy-url';
 import { DeleteRow } from './delete-row';
 import { UpdateRow } from './update-row';
@@ -27,7 +28,7 @@ export const Table = ({ data, setTableData }: TableProps) => {
         <T.TableBody>
           {data.map((url) => (
             <T.TableRow key={url.shortId}>
-              <T.TableCell>{url.timeStamp}</T.TableCell>
+              <T.TableCell>{formatDate(url.timeStamp)}</T.TableCell>
               <T.TableCell className="font-medium group relative">
                 <a
                   href={url.shortId}

@@ -1,4 +1,4 @@
-import { Schema, model, models } from 'mongoose';
+import { Schema, model } from 'mongoose';
 
 const urlModelSchema = new Schema(
   {
@@ -13,4 +13,4 @@ const urlModelSchema = new Schema(
   }
 );
 
-export const UrlModel = models.urls || model('urls', urlModelSchema);
+export const UrlModel = model('urls', urlModelSchema);

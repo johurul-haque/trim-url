@@ -30,7 +30,7 @@ export function UpdateRow(props: ActionParams) {
         <D.DialogHeader>
           <D.DialogTitle>Update URL</D.DialogTitle>
           <D.DialogDescription>
-            Modify the URL and click save to update.
+            Add new url and click save to update.
           </D.DialogDescription>
         </D.DialogHeader>
 

@@ -1,3 +1,4 @@
+import { toast } from '@/components/ui';
 import axios from 'axios';
 import { ActionParams } from './params';
 
@@ -6,35 +7,32 @@ type UpdateUrlParams = ActionParams & {
 };
 
 async function updateUrl({ data, ...params }: UpdateUrlParams) {
-  const { data: res } = await axios.patch(
-    '/api/edit',
-    { url: params.newUrl },
-    { params: { id: params.id } }
-  );
+  try {
+    await axios.patch(`/api/${params.id}`, {
+      url: params.newUrl,
+    });
 
-  const index = data.findIndex(({ shortId }) => shortId === params.id);
+    const index = data.findIndex(({ shortId }) => shortId === params.id);
 
-  if (index > -1) {
-    const currentData = data.splice(index, 1);
-
-    currentData[0].redirectUrl = params.newUrl;
+    const currentRow = data.splice(index, 1);
+    currentRow[0].redirectUrl = params.newUrl;
 
     const newTableData = [
       ...data.slice(0, index),
-      ...currentData,
+      ...currentRow,
       ...data.slice(index),
     ];
 
-    localStorage.removeItem('urls');
     localStorage.setItem('urls', JSON.stringify(newTableData));
+    params.setTableData(newTableData);
 
-    params.setTableData((prev) => !prev);
-  }
-
-  if (res.modifiedCount > 0) {
-    params.toast({ description: 'Updated successfully' });
-  } else {
-    params.toast({ description: 'Already up to date' });
+    toast({ title: '🔥 done', description: 'Update successful.' });
+  } catch (error) {
+    toast({
+      title: 'Uh oh! Something went wrong.',
+      description: 'There was a problem with your request.',
+      variant: 'destructive',
+    });
   }
 }
 

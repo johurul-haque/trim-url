@@ -47,7 +47,6 @@ export const Table = ({ data, setTableData }: TableProps) => {
                     data={data}
                     id={url.shortId}
                     setTableData={setTableData}
-                    toast={toast}
                   />
                 </div>
               </T.TableCell>
@@ -66,7 +65,6 @@ export const Table = ({ data, setTableData }: TableProps) => {
                   data={data}
                   id={url.shortId}
                   setTableData={setTableData}
-                  toast={toast}
                 />
               </T.TableCell>
             </T.TableRow>

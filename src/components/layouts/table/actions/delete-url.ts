@@ -1,12 +1,8 @@
+import { toast } from '@/components/ui';
 import axios from 'axios';
 import { ActionParams } from './params';
 
-export async function deleteUrl({
-  id,
-  data,
-  toast,
-  setTableData,
-}: ActionParams) {
+export async function deleteUrl({ id, data, setTableData }: ActionParams) {
   const index = data.findIndex(({ shortId }) => shortId === id);
 
   try {

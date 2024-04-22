@@ -1,10 +1,19 @@
+import { dbConnect } from '@/config/db';
 import { NextRequest, NextResponse } from 'next/server';
 import { handleErrors } from './handle-errors';
 
-type HandlerFunc = (req: NextRequest, res: NextResponse) => void;
+type HandlerFunc<T> = (
+  req: NextRequest,
+  res: NextResponse
+) => Promise<NextResponse<T>>;
 
-export function catchAsync(fn: HandlerFunc) {
+export function catchAsync<T>(fn: HandlerFunc<T>) {
   return async (req: NextRequest, res: NextResponse) => {
-    return Promise.resolve(fn(req, res)).catch(handleErrors);
+    try {
+      await dbConnect();
+      return await fn(req, res);
+    } catch (error) {
+      return handleErrors(error);
+    }
   };
 }

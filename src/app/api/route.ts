@@ -1,24 +1,29 @@
-import { dbConnect } from '@/config/db';
 import { catchAsync } from '@/lib/catch-async';
+import { sendResponse } from '@/lib/send-response';
 import { UrlModel } from '@/models/url.model';
 import { urlPayload } from '@/schema/url-payload';
 import { nanoid } from 'nanoid';
-import { NextRequest, NextResponse } from 'next/server';
 
-export const POST = catchAsync(async (req: NextRequest) => {
+export const POST = catchAsync(async (req) => {
   const { url } = urlPayload.parse(await req.json());
 
-  const shortId = nanoid(8);
-  return NextResponse.json({ shortId });
+  const result = await UrlModel.create({
+    redirectUrl: url,
+    shortId: nanoid(8),
+  });
+
+  return sendResponse({
+    status: 201,
+    message: 'Generated shortId for url',
+    data: result,
+  });
 });
 
-export async function GET(req: NextRequest, res: NextResponse) {
-  try {
-    await dbConnect();
-    const res = await UrlModel.find();
+export const GET = catchAsync(async (req) => {
+  const res = await UrlModel.find();
 
-    return NextResponse.json({ data: res });
-  } catch (err) {
-    return NextResponse.json(err);
-  }
-}
+  return sendResponse({
+    message: 'Urls list retrieved successfully',
+    data: res,
+  });
+});

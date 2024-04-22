@@ -9,7 +9,7 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'URL Shortener',
+  title: 'Trim URL',
   description: 'Minimal link shortening website.',
   authors: [{ name: 'Johurul Haque', url: 'https://johurul.vercel.app/' }],
 };

@@ -1,4 +1,5 @@
 'use client';
+
 import { Github, Link as LinkIcon } from 'lucide-react';
 import Link from 'next/link';
 
@@ -7,7 +8,7 @@ export const Header = () => {
     <header className="left-1/2 font-mono -translate-x-1/2 container max-w-6xl z-[60] absolute mx-auto">
       <nav className="w-full pt-4 flex justify-between items-center">
         <Link
-          title="Link Shortener"
+          title="Trim URL"
           className="flex gap-x-2 text-md sm:text-xl md:text-2xl font-semibold items-center"
           href="/"
         >
@@ -16,7 +17,7 @@ export const Header = () => {
             aria-hidden={true}
             className="size-4 md:size-6"
           />
-          shortener
+          trim
         </Link>
 
         <a

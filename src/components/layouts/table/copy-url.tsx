@@ -1,5 +1,5 @@
 import { toast } from '@/components/ui';
-import copyUrl from '@/utils/copy';
+import { copyUrl } from '@/utils/copy';
 import { Copy } from 'lucide-react';
 
 type CopyUrlProps = {

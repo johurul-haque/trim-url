@@ -12,7 +12,7 @@ export default function Home() {
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem('urls')!);
     setTableData(data || []);
-  }, [state]);
+  }, []);
 
   return (
     <>

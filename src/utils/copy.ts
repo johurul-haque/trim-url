@@ -1,9 +1,12 @@
-import server from '@/config';
+import { toast } from '@/components/ui';
 import copy from 'copy-text-to-clipboard';
 
-const copyUrl = ({ path, toast }: { path: string; toast: any }) => {
-  copy(server + path);
-  toast({ description: 'Copied to clipboard' });
+type CopyUrlParams = {
+  path: string;
+  toast: typeof toast;
 };
 
-export default copyUrl
+export const copyUrl = ({ path, toast }: CopyUrlParams) => {
+  copy(window.location.href + path);
+  toast({ description: 'Copied to clipboard' });
+};

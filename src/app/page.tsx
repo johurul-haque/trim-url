@@ -24,7 +24,7 @@ export default function Home() {
 
       <FormField setTableData={setTableData} />
 
-      {tableData.length && (
+      {!!tableData.length && (
         <Table data={tableData} setTableData={setTableData} />
       )}
     </>

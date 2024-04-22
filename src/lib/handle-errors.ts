@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import { NextResponse } from 'next/server';
 import { ZodError } from 'zod';
+import { AppError } from './app-error';
 
 export function handleErrors(error: unknown) {
   let errorResponse = {
@@ -33,8 +34,12 @@ export function handleErrors(error: unknown) {
     errorResponse = { status: 409, message: 'Duplicate key error', error };
   }
 
+  if (error instanceof AppError) {
+    errorResponse = { status: error.status, message: error.message, error };
+  }
+
   if (error instanceof Error) {
-    errorResponse = { ...errorResponse, message: error.message, error: error };
+    errorResponse = { ...errorResponse, message: error.message, error };
   }
 
   const { status, ...rest } = errorResponse;

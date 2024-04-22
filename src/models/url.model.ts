@@ -1,8 +1,8 @@
 import { Schema, model, models } from 'mongoose';
 
-const schema = new Schema(
+const urlModelSchema = new Schema(
   {
-    shortId: { type: String, unique: true },
+    shortId: { type: String, unique: true, required: true },
     redirectUrl: { type: String, required: true },
   },
   {
@@ -13,4 +13,4 @@ const schema = new Schema(
   }
 );
 
-export const UrlModel = models.urls || model('urls', schema);
+export const UrlModel = models.urls || model('urls', urlModelSchema);

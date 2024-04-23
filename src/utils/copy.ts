@@ -8,5 +8,5 @@ type CopyUrlParams = {
 
 export const copyUrl = ({ path, toast }: CopyUrlParams) => {
   copy(window.location.href + path);
-  toast({ title: '🥳 Copied', description: 'Check your clipboard.' });
+  toast({ title: '😎 Copied', description: 'Check your clipboard.' });
 };

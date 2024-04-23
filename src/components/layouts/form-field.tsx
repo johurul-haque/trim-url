@@ -52,6 +52,7 @@ export function FormField({ setTableData }: FormFieldProps) {
         <input
           {...register('url')}
           type="url"
+          id="url"
           className="block peer max-sm:py-4 sm:placeholder-transparent outline-none rounded-xl border-2 sm:h-16 w-full shadow-2xl px-7 focus:border-gray-400 bg-slate-50 transition-color"
           placeholder="Paste your URL"
           required

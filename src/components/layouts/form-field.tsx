@@ -15,7 +15,7 @@ type FormFieldProps = {
 };
 
 export function FormField({ setTableData }: FormFieldProps) {
-  const { register, handleSubmit } = useForm<Inputs>();
+  const { register, handleSubmit, reset } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = async ({ url }) => {
     try {
@@ -25,14 +25,15 @@ export function FormField({ setTableData }: FormFieldProps) {
       });
 
       const { data: response } = await axios.post('/api', { url });
+      saveToLocalStorage({ data: response.data, setTableData });
+
+      reset();
 
       updateToast({
         title: '🎉 Success!',
         description: 'Short link generated.',
         id,
       });
-
-      saveToLocalStorage({ data: response.data, setTableData });
     } catch (error) {
       toast({
         title: 'Uh oh! Something went wrong.',

@@ -1,6 +1,6 @@
 ![Trim URL homepage](/public/preview.png)
 
-# Trim URL
+## Trim URL
 Minimal link-shortening website built using NextJs and Shadcn/UI.
 
 ### Features

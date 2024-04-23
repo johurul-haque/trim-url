@@ -29,7 +29,7 @@ export default function Page() {
       </h1>
       <p className="max-w-56 mt-2 max-sm:text-sm sm:font-medium leading-5 text-neutral-700">
         {error
-          ? "Sorry about that. Couldn't find the record!"
+          ? "Sorry about that. Couldn't find any record!"
           : "👋 What's up? You'll be redirected shortly."}
       </p>
     </div>

@@ -30,17 +30,17 @@ export default function RootLayout({
 
             <div className="sm:container max-w-6xl flex-1 flex flex-col">
               <div
-                className="p-4 relative flex-1 z-50 bg-opacity-60 sm:px-14 rounded-t-lg shadow-[2px_8px_30px_-8px_rgba(0,0,0,0.25)]"
+                className="p-4 relative flex-1 z-40 bg-opacity-60 sm:px-14 rounded-t-lg shadow-[2px_8px_30px_-8px_rgba(0,0,0,0.25)]"
                 style={{
                   backgroundImage: `url(${pattern.src})`,
                 }}
               >
                 {children}
-                <Toaster />
               </div>
             </div>
           </section>
         </main>
+        <Toaster />
       </body>
     </html>
   );

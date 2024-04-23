@@ -1,5 +1,6 @@
 import pattern from '@/assets/pattern.svg';
 import { Header } from '@/components/layouts/Header';
+import { MetaTags } from '@/components/layouts/meta-tags';
 import { Toaster } from '@/components/ui';
 import { Gradients } from '@/components/ui/gradients';
 import type { Metadata } from 'next';
@@ -22,7 +23,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        
+        <MetaTags />
       </head>
       <body className={inter.className}>
         <Header />

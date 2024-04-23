@@ -11,12 +11,12 @@ Minimal link-shortening website built using NextJs and Shadcn/UI.
 5. URLs can be edited, deleted or copied to clipboard.
 
 ### Tech Stack 
-- **Next.js**
-- **TypeScript**
-- **Tailwind CSS** 
-- **Shadcn/UI**
-- **Mongoose**
-- **MongoDB**
+- Next.js
+- TypeScript
+- Tailwind CSS
+- Shadcn/UI
+- Mongoose
+- MongoDB
   
 ### Getting Started
 

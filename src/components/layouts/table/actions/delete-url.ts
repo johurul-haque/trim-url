@@ -6,7 +6,7 @@ export async function deleteUrl({ id, data, setTableData }: ActionParams) {
   const index = data.findIndex(({ shortId }) => shortId === id);
 
   try {
-      const { update: updateToast, id } = toast({
+      const { update: updateToast, id: toastId } = toast({
         title: '⏱️ Wait...',
         description: 'Processing your request',
       });
@@ -19,7 +19,7 @@ export async function deleteUrl({ id, data, setTableData }: ActionParams) {
       updateToast({
         title: '😉 done!',
         description: 'Successfully removed.',
-        id,
+        id: toastId,
       });
       setTableData([...data]);
   } catch (error) {

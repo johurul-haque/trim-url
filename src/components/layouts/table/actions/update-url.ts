@@ -8,6 +8,11 @@ type UpdateUrlParams = ActionParams & {
 
 async function updateUrl({ data, ...params }: UpdateUrlParams) {
   try {
+    const { update: updateToast, id } = toast({
+      title: '⏱️ Wait...',
+      description: 'Might take a while',
+    });
+
     await axios.patch(`/api/${params.id}`, {
       url: params.newUrl,
     });
@@ -26,7 +31,7 @@ async function updateUrl({ data, ...params }: UpdateUrlParams) {
     localStorage.setItem('urls', JSON.stringify(newTableData));
     params.setTableData(newTableData);
 
-    toast({ title: '🔥 done', description: 'Update successful.' });
+    updateToast({ title: '🔥 done', description: 'Update successful.', id });
   } catch (error) {
     toast({
       title: 'Uh oh! Something went wrong.',

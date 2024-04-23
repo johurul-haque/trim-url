@@ -6,16 +6,22 @@ export async function deleteUrl({ id, data, setTableData }: ActionParams) {
   const index = data.findIndex(({ shortId }) => shortId === id);
 
   try {
-    if (index > -1) {
+      const { update: updateToast, id } = toast({
+        title: '⏱️ Wait...',
+        description: 'Processing your request',
+      });
       await axios.delete(`/api/${id}`);
 
       data.splice(index, 1);
 
       localStorage.setItem('urls', JSON.stringify(data));
 
-      toast({ title: '😉 done!', description: 'Successfully deleted.' });
+      updateToast({
+        title: '😉 done!',
+        description: 'Successfully removed.',
+        id,
+      });
       setTableData([...data]);
-    }
   } catch (error) {
     toast({
       title: 'Uh oh! Something went wrong.',

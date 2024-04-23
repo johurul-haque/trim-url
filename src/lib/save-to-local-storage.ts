@@ -1,10 +1,12 @@
-import { responseSchema } from '@/schema/response';
 import { SetStateActionType } from '@/types/set-state-action';
 import { TableData } from '@/types/table-data';
-import { z } from 'zod';
 
 type ParamsType = {
-  data: z.infer<typeof responseSchema>;
+  data: {
+    shortId: string;
+    redirectUrl: string;
+    createdAt: string;
+  };
   setTableData: SetStateActionType<TableData[]>;
 };
 

@@ -1,14 +1,14 @@
 ![Trim URL homepage](/public/preview.png)
 
-## Trim URL
+# Trim URL
 Minimal link-shortening website built using NextJs and Shadcn/UI.
 
 ### Features
 1. Creates unique short URLs.
-2. Redirects to the original URL.
+2. Redirect to the original URL.
 3. Saves generated URLs in local storage.
 4. A table showing the list of generated URLs saved in local storage.
-5. URLs can be edited, deleted or copied to clipboard.
+5. URLs can be edited, deleted, or copied to the clipboard.
 
 ### Tech Stack 
 - Next.js

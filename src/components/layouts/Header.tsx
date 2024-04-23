@@ -21,7 +21,7 @@ export const Header = () => {
         </Link>
 
         <a
-          href="https://github.com/johurul-haque/url-shortener"
+          href="https://github.com/johurul-haque/trim-url"
           target="_blank"
           className="sm:p-2 max-sm:flex gap-2 rounded-full sm:hover:bg-slate-200/90 sm:focus-visible:bg-slate-200/90 transition-colors"
           rel="noopener noreferrer"

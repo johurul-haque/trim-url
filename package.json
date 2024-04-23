@@ -1,12 +1,16 @@
 {
-  "name": "url-shortener",
-  "version": "0.1.0",
+  "name": "trim-url",
+  "version": "1.0.0",
+  "license": "MIT",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
+  },
+  "repository": {
+    "url": "https://github.com/johurul-haque/trim-url"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.0.4",

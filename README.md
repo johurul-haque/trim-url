@@ -1,25 +1,33 @@
-# Trim URL
-An open-source link shortening website that allows users to beautify their URLs for easy sharing.
+![Trim URL homepage](/public/preview.png)
 
-![Trim URL homepage](client/public/trimurl.png)
+## Trim URL
+Minimal link-shortening website built using NextJs and Shadcn/UI.
 
-## Features
-1. Shorten long URLs to easily share them with others.
-2. Redirects user to the original URL when they access a shortened link.
-3. Saves shortened URLs in local storage.
-4. Redirect URLs can be modified after creation.
-5. URLs can be removed both from server and local storage.
+### Features
+1. Creates unique short URLs.
+2. Redirects to the original URL.
+3. Saves generated URLs in local storage.
+4. A table showing the list of generated URLs saved in local storage.
+5. URLs can be edited, deleted or copied to clipboard.
 
-## Technologies Used 
-* **Next.js**
-* **TypeScript**
-* **Tailwind CSS** 
-* **Shandcn UI**
-* **MongoDB**
+### Tech Stack 
+- **Next.js**
+- **TypeScript**
+- **Tailwind CSS** 
+- **Shadcn/UI**
+- **Mongoose**
+- **MongoDB**
   
-## Getting Started
+### Getting Started
 
-First, run the development server:
+Add the following environment variables
+
+```ini
+# .env
+MONGODB_URI=mongodb+srv://...
+```
+
+Install the dependencies and start the dev server.
 
 ```bash
 npm run dev
@@ -32,6 +40,6 @@ pnpm dev
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 
-## License
+### License
 This project is licensed under the MIT License.
 
